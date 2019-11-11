@@ -23,7 +23,6 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	bls12.SetETHserialization(true)
 }
 
 var pubkeyCache = ccache.New(ccache.Configure())
@@ -119,13 +118,9 @@ func (s *SecretKey) Sign(msg []byte, domain uint64) *Signature {
 	return &Signature{s: signature}
 }
 
-// Marshal a secret key into a LittleEndian byte slice.
+// Marshal a secret key into a BigEndian byte slice.
 func (s *SecretKey) Marshal() []byte {
 	keyBytes := s.p.Serialize()
-	if len(keyBytes) < 32 {
-		emptyBytes := make([]byte, 32-len(keyBytes))
-		keyBytes = append(emptyBytes, keyBytes...)
-	}
 	return keyBytes
 }
 
